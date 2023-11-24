@@ -37,8 +37,7 @@ module NotionToMd
         end
 
         def numbered_list_item(block)
-          Logger.info('numbered_list_item type not supported. Shown as bulleted_list_item.')
-          bulleted_list_item(block)
+          "1. #{convert_text(block)}"
         end
 
         def to_do(block)
@@ -100,7 +99,7 @@ module NotionToMd
         end
 
         def blank
-          '<br />'
+          '\n\n'
         end
 
         def table_row(block)
@@ -108,34 +107,19 @@ module NotionToMd
         end
 
         def toggle(block)
-          result = []
-          result << "> [!CAUTION]"
-          result << "> **Unsupported Toggle Block**"
-          result << "> <br />"
-          result << "> Content needs to be imported manually."
-          result << "> <br />"
-          result << "> <br />"
-          result << "> This is the toggle title to help you find it in the original Notion page:"
-          result << "> <br />"
-          title = block[:rich_text].map {|text| Text.send(text[:type], text)}.join
-          result << "> **#{title}**"
-          result << "> <br />"
-          result.join("\n")
+          result = <<-TEXT
+            <details>
+              <summary>#{block.block.toggle["rich_text"].map { |text| Text.send(text[:type], text) }.join}</summary>
+              #{block.children.map(&:to_md).join("\n")}
+            </details>
+          TEXT
+          result.strip
         end
 
         def equation(block)
-          result = []
-          result << "> [!CAUTION]"
-          result << "> **Unsupported Equation Block**"
-          result << "> <br />"
-          result << "> Content needs to be imported manually."
-          result << "> <br />"
-          result << "> <br />"
-          result << "> This is the equation to help you find it in the original Notion page:"
-          result << "> <br />"
-          result << "> **#{block[:expression]}**" # Returns ruby code with the equation at least
-          result << "> <br />"
-          result.join("\n")
+          # We use the Mathjax library in Kitt allowing us to use the following syntax https://www.mathjax.org/#gettingstarted
+          # e.g: https://github.com/lewagon/data-flashcards/blob/master/decks/03-Maths_01-Algebra-Calculus.yml#L13
+          "$#{block[:expression]}$"
         end
 
         def column_list(block)
