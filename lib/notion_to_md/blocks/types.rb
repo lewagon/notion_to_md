@@ -114,7 +114,7 @@ module NotionToMd
               #{block.children.map(&:to_md).join}
             </details>
           TEXT
-          result.join("\n")
+          result.strip
         end
 
         def equation(block)
