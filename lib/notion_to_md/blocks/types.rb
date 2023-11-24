@@ -110,7 +110,7 @@ module NotionToMd
           result = <<-TEXT
             <details>
               <summary>#{block.block.toggle["rich_text"].map { |text| Text.send(text[:type], text) }.join}</summary>
-              #{block.children.map(&:to_md).join}
+              #{block.children.map(&:to_md).join("\n")}
             </details>
           TEXT
           result.strip
