@@ -99,7 +99,9 @@ module NotionToMd
         end
 
         def blank
-          '<br />'
+          "
+
+          "
         end
 
         def table_row(block)
