@@ -1,4 +1,9 @@
 # frozen_string_literal: true
+class String
+  def append_conditional_space
+    self[-1] == ' ' ? ' ' : ''
+  end
+end
 
 module NotionToMd
   module Blocks
@@ -237,7 +242,7 @@ module NotionToMd
           href = text[:href]
           return content if href.nil?
           
-          "[#{content.strip}](#{href})#{content[-1] == ' ' ? ' ' : ''}"
+          "[#{content.strip}](#{href})#{content.append_conditional_space}"
         end
 
         def add_annotations(text, content)
