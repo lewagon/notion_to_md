@@ -40,6 +40,9 @@ module NotionToMd
         end
       rescue NoMethodError
         Logger.info("Unsupported block type: #{block_type}")
+        if block_type == :paragraph
+          Logger.info("Mentions are not supported")
+        end
         nil
       end
 
