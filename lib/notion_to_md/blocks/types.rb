@@ -241,7 +241,7 @@ module NotionToMd
         def add_link(text, content)
           href = text[:href]
           return content if href.nil?
-          
+
           "[#{content.strip}](#{href})#{content.append_conditional_space}"
         end
 
