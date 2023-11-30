@@ -236,11 +236,8 @@ module NotionToMd
         def add_link(text, content)
           href = text[:href]
           return content if href.nil?
-          if content[-1] == " "
-            "[#{content.strip}](#{href}) "
-          else
-            "[#{content}](#{href})"
-          end
+          
+          "[#{content.strip}](#{href})#{content[-1] == ' ' ? ' ' : ''}"
         end
 
         def add_annotations(text, content)
