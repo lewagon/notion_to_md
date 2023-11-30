@@ -13,11 +13,19 @@ module NotionToMd
   class TextAnnotation
     class << self
       def italic(text)
-        "*#{text}*"
+        if text[-1] == ' '
+          "_#{text.strip}_ "
+        else
+          "_#{text}_"
+        end
       end
 
       def bold(text)
-        "**#{text}**"
+        if text[-1] == ' '
+          "**#{text.strip}** "
+        else
+          "**#{text}**"
+        end
       end
 
       def strikethrough(text)
