@@ -100,7 +100,7 @@ module NotionToMd
         end
 
         def divider(_block)
-          '---'
+          blank
         end
 
         def blank
