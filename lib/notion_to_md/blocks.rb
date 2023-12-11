@@ -39,6 +39,17 @@ module NotionToMd
     #
     def self.build(block_id:, &fetch_blocks)
       blocks = fetch_blocks.call(block_id)
+      has_more = blocks["has_more"]
+      next_cursor = blocks["next_cursor"]
+
+      while has_more
+        paginated_blocks = fetch_blocks.call(block_id, next_cursor)
+        blocks["results"].concat(paginated_blocks["results"])
+
+        has_more = paginated_blocks["has_more"]
+        next_cursor = paginated_blocks["next_cursor"]
+      end
+
       blocks.results.map do |block|
         children = if permitted_children?(block: block)
                      build(block_id: block.id, &fetch_blocks)

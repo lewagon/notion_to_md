@@ -51,13 +51,17 @@ module NotionToMd
     end
 
     def build_blocks(block_id:)
-      Blocks.build(block_id: block_id) do |nested_block_id|
-        fetch_blocks(block_id: nested_block_id)
+      Blocks.build(block_id: block_id) do |nested_block_id, start_cursor|
+        fetch_blocks(block_id: nested_block_id, start_cursor: start_cursor)
       end
     end
 
-    def fetch_blocks(block_id:)
-      @notion.block_children(block_id: block_id)
+    def fetch_blocks(block_id:, start_cursor: nil)
+      if start_cursor.present?
+        @notion.block_children(block_id: block_id, start_cursor: start_cursor)
+      else
+        @notion.block_children(block_id: block_id)
+      end
     end
   end
 end
