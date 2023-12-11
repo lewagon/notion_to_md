@@ -55,6 +55,7 @@ module NotionToMd
         def code(block)
           language = block[:language]
           text = convert_text(block)
+          text = text.gsub("\t", "  ")
 
           language = 'text' if language == 'plain text'
 
