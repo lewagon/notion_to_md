@@ -116,7 +116,7 @@ module NotionToMd
 
         def toggle(block)
           result = <<-TEXT
-<details>
+<details markdown="1">
 <summary>#{block.block.toggle["rich_text"].map { |text| Text.send(text[:type], text) }.join}</summary>
 
 #{block.children.map(&:to_md).join("\n")}
